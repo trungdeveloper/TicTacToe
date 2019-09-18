@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table{
+            height: 300px;
+            width: 300px;
+        }
+        input {
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td><input type="button"></td>
+                <td><input type="button"></td>
+                <td><input type="button"></td>
+            </tr>
+
+            <tr>
+                <td><input type="button"></td>
+                <td><input type="button"></td>
+                <td><input type="button"></td>
+            </tr>
+
+            <tr>
+                <td><input type="button"></td>
+                <td><input type="button"></td>
+                <td><input type="button"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="show"></div>
+</body>
+
+<script>
+    let point = 0;
+    let arr = [];
+    let arrWins = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    arrX = [];
+    arrY = [];
+
+    const checkWin = arr => {
+        let check;
+        for (let i = 0; i < arrWins.length; i++) {
+            let a = arrWins[i].every(ele => {
+                return arr.includes(ele)
+            })
+            if (a == true) {
+                check = "Win";
+                break;
+            }
+        }
+        if (check) {
+            if(point = 1)
+                document.getElementById('show').innerHTML = 'X WIN';
+            else
+                document.getElementById('show').innerHTML = 'O WIN';
+        }
+    }
+
+    let buttons = document.querySelectorAll("input");
+    buttons.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            if (arr[index] === undefined) {
+                if (point) {
+                    btn.value = 'X';
+                    arrX.push(index);
+                    arr[index] = point;
+                    checkWin(arrX);
+                    point = 0;
+                } else {
+                    btn.value = 'O';
+                    arrY.push(index);
+                    arr[index] = point;
+                    checkWin(arrY);
+                    point = 1;
+                }
+            }
+            console.log(arr)
+        })
+    })
+
+
+</script>
+
+</html>
