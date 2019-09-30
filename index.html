@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <td>Name</td>
+            <td>Score</td>
+        </thead>
+        <tbody id="show">
+
+        </tbody>
+    </table>
+    <form id="addForm" action="" style="visibility: hidden">
+        <input type="text" id="name">
+        <input type="text" id="score">
+        <button type="reset" onclick="add()">Submit</button>
+    </form>
+    <button onclick="a()">Add</button>
+
+</body>
+
+<script>
+    const a = () => {
+        document.querySelector("#addForm").style.visibility = "visible";
+    }
+
+    const add = () => {
+        name = document.querySelector("#name").value;
+        score = document.querySelector("#score").value;
+        const object = { name, score };
+        var list = JSON.parse(localStorage.getItem('students'));
+        list.push(object)
+        localStorage.setItem('students', JSON.stringify(list));
+        document.querySelector("form").style.visibility = "hidden";
+        show(object, list.length - 1);
+    }
+
+    const update = (id, e) => {
+        var listNode = e.target.parentNode.children;
+        listNode[0].firstChild.removeAttribute("disabled");
+        listNode[1].firstChild.removeAttribute("disabled");
+    }
+
+    const del = (id, e) => {
+        var list = JSON.parse(localStorage.getItem('students'));
+        list.splice(id, 1);
+        localStorage.setItem('students', JSON.stringify(list));
+        e.target.parentNode.remove()
+    }
+
+    const show = (ele, index) => {
+        var node = document.createElement("tr");
+        var tdName = document.createElement("td");
+        var tdScore = document.createElement("td");
+        var iptName = document.createElement("input");
+        var iptScore = document.createElement("input");
+        var button = document.createElement("button");
+        var btnUpdate = document.createElement("button");
+        var btnTxt = document.createTextNode("delete");
+        var btnUpdateTxt = document.createTextNode("update");
+
+        iptName.value = ele.name;
+        iptName.disabled = true;
+        iptScore.value = ele.score;
+        iptScore.disabled = true;
+
+        tdName.appendChild(iptName);
+        tdScore.appendChild(iptScore);
+        button.appendChild(btnTxt);
+        btnUpdate.appendChild(btnUpdateTxt);
+
+        button.addEventListener('click', e => { del(index, e) });
+        btnUpdate.addEventListener('click', e => { update(index, e) });
+
+        node.appendChild(tdName);
+        node.appendChild(tdScore);
+        node.appendChild(button);
+        node.appendChild(btnUpdate);
+
+        document.querySelector("#show").appendChild(node);
+    }
+
+    var list = JSON.parse(localStorage.getItem('students'));
+    list.forEach((ele, index) => {
+        show(ele, index);
+    });
+</script>
+
+</html>
